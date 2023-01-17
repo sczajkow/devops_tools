@@ -1,14 +1,15 @@
 import paramiko
 import re
 from colorama import Fore
+from collections import defaultdict
 
 username = "labuser"
 password = "labuser"
 output = ""
-qrack = list(range(2,9))
-rack_switches = list(range(1,4))
-#qrack = list(range(2,4)) # testing range single host test variable
-#rack_switches = list(range(1,2)) # testing range single host test variable
+#qrack = list(range(2,9))
+#rack_switches = list(range(1,4))
+qrack = list(range(2,4)) # testing range single host test variable
+rack_switches = list(range(1,2)) # testing range single host test variable
 rows = ('q','r')
 
 
@@ -38,16 +39,19 @@ def get_vlan():
                             lines = lines[0:2]
                             eth = lines[0]
                             vlan = lines[1]
-                            port_vlan[vlan] = port_vlan.get(vlan, eth)
-                            switch_vlan[vlan] = switch_vlan.get(vlan, f'q{rack}-tor-{index}')
-                            dup_vlan[vlan] = dup_vlan.get(vlan, 0) + 1
+                            port_vlan[host].append((vlan,eth))
+#                            port_vlan[vlan] = port_vlan.get(vlan, eth)
+#                            switch_vlan[vlan] = switch_vlan.get(vlan, f'q{rack}-tor-{index}')
+#                            dup_vlan[vlan] = dup_vlan.get(vlan, 0) + 1
 
 failed_host = []
-port_vlan = dict()
-switch_vlan = dict()
-dup_vlan = dict()
+#port_vlan = dict()
+port_vlan = defaultdict(list)
+#switch_vlan = dict()
+#dup_vlan = dict()
 
-
+#get_vlan()
+#print(port_vlan)
 
 def failed_hosts():
     print(Fore.RED + 'These hosts are either down or do no exist in the rack. Please check devit-rackman.cisco.com')
@@ -59,33 +63,29 @@ def failed_hosts():
 
 def print_all_vlan():
     get_vlan()
-    print("{:<10} {:<10} {:5}".format('Switch','Port','VLAN'))
-    for key in zip(port_vlan, switch_vlan):
-        key1 = key[0] #this sets key1 to the the keys in port_vlan dict
-        key2 = key[0]
-        ports = port_vlan[key1] #this ends up being the port
-        host = switch_vlan[key2]
-        print("{:<10} {:<10} {:5}".format(host,ports,key1))
+    lst = tuple()
+    for key,val in port_vlan.items():
+        lst = val
+        print(Fore.BLUE + key + Fore.RESET)
+        for k,v in lst:
+            print(k,v)
     failed_hosts()
-
 
 def find_single_vlan():
     get_vlan()
-    print("{:<10} {:<10} {:5}".format('Switch','Port','VLAN'))
-    host = None
     vlan = None
-    port = None
-    for v,p in port_vlan.items():
-        if v == input_vlan:
-            port = p
-            vlan = v
-    for v,h in switch_vlan.items():
-        if v == input_vlan:
-            host = h
-    if vlan is None:
-        print('This Vlan is Not Assigned, or in a down switch')
-    else:
-        print("{:<10} {:<10} {:5}".format(host,port,vlan))
+    print("{:<38} {:<20} {:5}".format('Switch','Port','VLAN'))
+    lst = tuple()
+    for key,val in port_vlan.items():
+        lst = val
+        for k,v in lst:
+            if k == input_vlan:
+               vlan = k
+               host = key
+               port = v
+               print("{:<38} {:<20} {:<5}".format(host,port,vlan))
+    if vlan == None:
+        print(f'Vlan {input_vlan} is Not Assigned, or in a down switch')
     failed_hosts()
 
 def find_range_vlan():
