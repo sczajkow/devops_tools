@@ -8,14 +8,17 @@ class find_all_address:
     addrr = []
     def __init__(self):
         print('starting program')
+        self.addrr = addrr
+        self.address = address
     def create_subnet_ip_list(self,subnet):
-        address = dict()
+        self.address = dict()
         adr = list(ipaddress.ip_network(subnet).hosts())
-        for ip in adr:  address[str(ip)] = address.get(str(ip), 0)
-        return address
+        for ip in adr:  self.address[str(ip)] = self.address.get(str(ip), 0)
+        return self.address
 
     def get_ips_from_yaml(self,offbox_cmd, offbox_dev_cmd, onbox_cmd):
-        global offbox_files, onbox_files, offbox_dev_files
+#        global offbox_files, onbox_files, offbox_dev_files
+
         offboxc = offbox_cmd
         offbox_devc = offbox_dev_cmd
         onboxc = onbox_cmd
@@ -44,7 +47,7 @@ class find_all_address:
         return offbox_files, offbox_dev_files, onbox_files
 
     def find_ip(self,cmd,files_lst):
-        addrr = []
+        self.addrr = []
         tb = dict()
         for files in files_lst:
             if files == 'baseline-ful01-r3-36-asa5516-1.yaml':
@@ -56,11 +59,11 @@ class find_all_address:
                         addrr.append(tb['devices'][device]['connections']['management']['ip'])
                         count = 1
                         while count != 7:
-                            addrr.append(tb['devices'][device]['custom']['chassis_software']['applications'][count]['logical_device']['ipv4']['ip'])
+                            self.addrr.append(tb['devices'][device]['custom']['chassis_software']['applications'][count]['logical_device']['ipv4']['ip'])
                             count = count + 1
                     except:
                         continue
-        return addrr
+        return self.addrr
 
 
 find = find_all_address()
@@ -70,11 +73,12 @@ offbox_cmd = f'{path}firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_
 offbox_dev_cmd = f'{path}firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_0/offbox/Development_resources/'
 onbox_cmd = f'{path}firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_0/onbox/Fulton/'
 
-addrr = []
+#addrr = []
 file_list = find.get_ips_from_yaml(offbox_cmd, offbox_dev_cmd, onbox_cmd)
-addrr.append(find.find_ip(offbox_cmd, offbox_files))
-addrr.append(find.find_ip(offbox_dev_cmd, offbox_dev_files))
-addrr.append(find.find_ip(onbox_cmd, onbox_files))
-print(sorted(addrr))
+addrr = find.find_ip(offbox_cmd, files_list[0]),find.find_ip(offbox_dev_cmd, files_list[1]),find.find_ip(onbox_cmd, files_list[2])
+#addrr.append(find.find_ip(offbox_cmd, files_list[0]))
+#addrr.append(find.find_ip(offbox_dev_cmd, files_list[1]))
+#addrr.append(find.find_ip(onbox_cmd, files_list[2]))
+print(addrr)
 
 
