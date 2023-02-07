@@ -6,13 +6,15 @@ import yaml
 class find_all_address:
     subnet = 0
     addrr = []
-    def create_subnet_ip_list(subnet):
+    def __init__(self):
+        print('starting program')
+    def create_subnet_ip_list(self,subnet):
         address = dict()
         adr = list(ipaddress.ip_network(subnet).hosts())
         for ip in adr:  address[str(ip)] = address.get(str(ip), 0)
         return address
 
-    def get_ips_from_yaml(offbox_cmd, offbox_dev_cmd, onbox_cmd):
+    def get_ips_from_yaml(self,offbox_cmd, offbox_dev_cmd, onbox_cmd):
         global offbox_files, onbox_files, offbox_dev_files
         offboxc = offbox_cmd
         offbox_devc = offbox_dev_cmd
@@ -41,7 +43,7 @@ class find_all_address:
                             onbox_files.append(files)
         return offbox_files, offbox_dev_files, onbox_files
 
-    def find_ip(cmd,files_lst):
+    def find_ip(self,cmd,files_lst):
         addrr = []
         tb = dict()
         for files in files_lst:
@@ -61,7 +63,7 @@ class find_all_address:
         return addrr
 
 
-find = find_all_address
+find = find_all_address()
 subnet_ip = find.create_subnet_ip_list('10.11.0.0/19')
 path = '/Users/sczajkow/Perforce/sczajkow-p-cim-ful-caas-1672842335095/'
 offbox_cmd = f'{path}firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_0/offbox/Fulton/'
