@@ -6,11 +6,11 @@ from collections import defaultdict #default python packaage
 username = "labuser"
 password = "labuser"
 output = ""
-#qrack = list(range(2,9))
-#rack_switches = list(range(1,4))
-qrack = list(range(2,4)) # testing range single host test variable
-rack_switches = list(range(1,2)) # testing range single host test variable
-rows = ('q','r')
+
+#these two items are needed for my lab setup, I have removed the data so no can figure it out
+#qrack = list(range(removed))
+#rack_switches = list(range(removed))
+
 
 def create_ssh():
     global output
@@ -31,10 +31,12 @@ def get_all_vlans():
     for row in rows:
         for rack in qrack:
             for index in rack_switches:
-                if (f'{row}{rack}' == 'r5') or (f'{row}{rack}' == 'r8'):
+                #data in as written I have removed parts of it on purpose
+                if (f'{row}{rack}' == 'n/a') or (f'{row}{rack}' == 'n/a'):
                     continue
                 else:
-                    host = f'ful01-130-{row}{rack}-tor-{index}.devit.ciscolabs.com'
+                    
+                    host = f'host-{row}{rack}-tor-{index}.devit.ciscolabs.com'
                     print(Fore.GREEN + host + Fore.RESET )
                     ssh = paramiko.SSHClient()
                     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
