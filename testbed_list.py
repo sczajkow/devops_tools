@@ -3,8 +3,9 @@ import subprocess
 
 class setups_list:
 
-    path = '/Users/sczajkow/Perforce/sczajkow-p-cim-ful-caas-1672842335095/firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_0/'
-    with open ('/Users/sczajkow/Perforce/sczajkow-p-cim-ful-caas-1672842335095/firepower/ims/IMS_7_3_0/feature-test-lib/tests/system/cim_orchestrator/bqt_bat/setups.yaml') as file:
+    #I have removed the paths intentionally, would need to be entered for whatever devices you are on
+    path = 'Enter your path here'
+    with open ('enter the path here') as file:
         tb = yaml.safe_load(file)
         for testbeds in tb['setups'].keys():
             print(testbeds)
