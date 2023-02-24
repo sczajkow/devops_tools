@@ -50,8 +50,6 @@ class find_all_address:
         self.addrr = []
         tb = dict()
         for files in files_lst:
-            if files == 'baseline-ful01-r3-36-asa5516-1.yaml':
-                print('HEY YOU GUYS')
             with open (f'{cmd}{files}') as file:
                 tb = yaml.safe_load(file)
                 for device in tb['devices'].keys():
@@ -68,10 +66,10 @@ class find_all_address:
 
 find = find_all_address()
 subnet_ip = find.create_subnet_ip_list('10.11.0.0/19')
-path = '/Users/sczajkow/Perforce/sczajkow-p-cim-ful-caas-1672842335095/'
-offbox_cmd = f'{path}firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_0/offbox/Fulton/'
-offbox_dev_cmd = f'{path}firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_0/offbox/Development_resources/'
-onbox_cmd = f'{path}firepower/ims/IMS_7_3_0/feature-test-lib/testbeds/bqtbat_2_0/onbox/Fulton/'
+path = '<removed by me>'
+offbox_cmd = f'{path}<removed by me>'
+offbox_dev_cmd = f'{path}removed by me>'
+onbox_cmd = f'{path}<removed by me>'
 
 #addrr = []
 file_list = find.get_ips_from_yaml(offbox_cmd, offbox_dev_cmd, onbox_cmd)
